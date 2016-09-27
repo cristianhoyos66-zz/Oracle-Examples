@@ -1,0 +1,17 @@
+set serveroutput on;
+
+CREATE OR REPLACE TRIGGER RANDOM_NUMBER
+BEFORE INSERT ON EMPLEADOS
+FOR EACH ROW
+  DECLARE 
+    CURSOR cEmpleados IS SELECT COUNT(*) FROM EMPLEADOS;
+    totalEmpleados INTEGER;
+BEGIN
+
+  OPEN cEmpleados;
+    FETCH cEmpleados INTO totalEmpleados;
+  CLOSE cEmpleados;
+  
+  dbms_output.put_line('Total empleados' || totalEmpleados);  
+END;
+/

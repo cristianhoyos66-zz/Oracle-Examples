@@ -1,0 +1,10 @@
+CREATE TABLESPACE CLASE6 LOGGING
+	DATAFILE 'D:\CBDII\clase6.dbf' size 2M
+	extent management local segment space management auto;
+    
+create user CLASE6 profile default  
+	identified by 1234
+	default tablespace CLASE6
+	temporary tablespace temp 
+	account unlock;
+  grant connect, resource, dba to CLASE6; 

@@ -1,0 +1,11 @@
+-- Generos
+INSERT INTO GENEROS (Identificacion, Descripcion)
+  VALUES (1, 'MASCULINO');
+  
+INSERT INTO GENEROS (Identificacion, Descripcion)
+  VALUES (2, 'FEMENINO');
+  
+-- Empleados
+
+INSERT INTO EMPLEADOS (Identificacion, Nombre_Completo, Fecha_Nacimiento, Genero)
+  VALUES ('1234', 'Carmen María', sysdate, 1);

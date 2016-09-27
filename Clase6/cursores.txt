@@ -1,0 +1,51 @@
+create or replace 
+TRIGGER TR_PERSONAS 
+BEFORE INSERT ON PERSONAS
+for each row
+BEGIN
+    declare
+           cursor c_personas_todos is
+               select id_per from personas;
+
+           cursor c_personas is
+               select nvl(count(*),1) from personas;
+    
+          wcantidad_personas integer :=0;
+          waleatorio         integer :=0;
+          wexiste_numero     integer:=0;
+    begin
+        --select nvl(count(*),1) into wcantidad_personas from personas;
+        open c_personas;
+        fetch c_personas into wcantidad_personas;
+        close c_personas;
+        
+        open c_personas_todos;
+        loop
+           fetch c_personas_todos into wcantidad_personas;
+           dbms_output.put_line('ID Persona: ' || wcantidad_personas);
+           exit when c_personas_todos%NOTFOUND;
+        end loop;   
+        close c_personas_todos;
+        
+        
+        if(wcantidad_personas =0) then
+           wcantidad_personas :=1;
+        end if;   
+        select round(dbms_random.value(1,wcantidad_personas)) 
+              into waleatorio
+        from dual;
+        select count(*) into wexiste_numero 
+        from numeros 
+        where numero_num = waleatorio;
+        if(wexiste_numero > 0) then
+             update numeros set
+             veces_num = veces_num + 1
+             where numero_num = waleatorio;
+        else
+            insert into numeros (numero_num,veces_num) values(waleatorio,1);
+        end if;
+        dbms_output.put_line('Número de Persona: ' || wcantidad_personas||
+                             ' Aleatorio: ' || waleatorio);
+        :new.numero_per := waleatorio;        
+    end;
+END;
